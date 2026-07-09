@@ -31,18 +31,19 @@ const translations = {
     whiteStoneTitle: "White dolomite", whiteStoneText: "Marmara Island origin", mixedStoneTitle: "Mixed natural stone", mixedStoneText: "Tumbled colour selection",
     colourStoneTitle: "Coloured stone", colourStoneText: "Selected regional varieties", objectEyebrow: "Natural-stone objects",
     objectTitle: "Useful forms shaped by natural material.", objectText: "Every natural-stone object carries its own tone, veining and surface character. Product availability is confirmed for each enquiry.",
-    captionBath: "Bathroom collection", captionAshtray: "Carved marble object", captionBasin: "Natural-stone basin", captionOnyx: "Onyx and decorative stone",
+    captionBath: "Marble mosaic", captionAshtray: "Marble stone figures", captionBasin: "Natural-stone basin", captionOnyx: "Onyx and decorative stone",
     qualityEyebrow: "Technical conversation", qualityTitle: "Start with the specification, not a generic catalogue.",
     qualityText: "Tell us the required mineral, particle size, quantity, packing format and delivery destination. For natural stone, include the preferred colour, size, finish and application.",
     quality1Title: "Technical data", quality1Text: "Analysis and sieve information", quality2Title: "Samples", quality2Text: "Prepared for product and R&D review",
     quality3Title: "Packing plan", quality3Text: "Matched to volume and handling", quality4Title: "Commercial enquiry", quality4Text: "Domestic and export requests",
     contactEyebrow: "Product enquiry", contactTitle: "What material do you need?",
-    contactText: "Prepare an enquiry with your product, size, volume, packing and destination requirements. Confirmed company contact details can be connected before publication.",
+    contactText: "Prepare an enquiry with your product, size, volume, packing and destination requirements.",
+    contactEmailLabel: "Email", contactAddressLabel: "Address",
     formName: "Name / company", formEmail: "Email", formProduct: "Product", formDestination: "Delivery destination",
     formMessage: "Specification / message", formButton: "Prepare enquiry", optionCalcite: "Micronized calcite", optionDolomite: "Micronized dolomite",
     optionLandscape: "Landscape stone", optionObjects: "Natural-stone objects",
     footerNote: "Product availability, specifications and packing are confirmed per enquiry.",
-    formStatus: "Your enquiry has been prepared. A confirmed company email must be connected before publication."
+    formStatus: "Your email app will open with the enquiry addressed to anchorminemineral@gmail.com."
   },
   tr: {
     navProducts: "Ürünler", navSupply: "Tedarik", navAbout: "Hakkımızda", navContact: "İletişim",
@@ -76,18 +77,19 @@ const translations = {
     whiteStoneTitle: "Beyaz dolomit", whiteStoneText: "Marmara Adası kaynaklı", mixedStoneTitle: "Karışık doğal taş", mixedStoneText: "Tamburlanmış renk seçkisi",
     colourStoneTitle: "Renkli taşlar", colourStoneText: "Seçili bölgesel çeşitler", objectEyebrow: "Doğal taş objeler",
     objectTitle: "Doğal malzemenin şekillendirdiği kullanışlı formlar.", objectText: "Her doğal taş obje kendine özgü ton, damar ve yüzey karakterine sahiptir. Ürün bulunabilirliği her talep için teyit edilir.",
-    captionBath: "Banyo koleksiyonu", captionAshtray: "Oyma mermer obje", captionBasin: "Doğal taş lavabo", captionOnyx: "Oniks ve dekoratif taş",
+    captionBath: "Mermer mozaik", captionAshtray: "Mermer taş figürler", captionBasin: "Doğal taş lavabo", captionOnyx: "Oniks ve dekoratif taş",
     qualityEyebrow: "Teknik görüşme", qualityTitle: "Genel katalogla değil, spesifikasyonla başlayın.",
     qualityText: "İhtiyaç duyulan mineral, tane boyutu, miktar, ambalaj ve teslim noktasını belirtin. Doğal taş için tercih edilen renk, ölçü, yüzey ve kullanım alanını ekleyin.",
     quality1Title: "Teknik veri", quality1Text: "Analiz ve elek bilgileri", quality2Title: "Numune", quality2Text: "Ürün ve Ar-Ge incelemesi için hazırlanır",
     quality3Title: "Ambalaj planı", quality3Text: "Hacim ve elleçlemeye göre belirlenir", quality4Title: "Ticari talep", quality4Text: "Yurt içi ve ihracat talepleri",
     contactEyebrow: "Ürün talebi", contactTitle: "Hangi malzemeye ihtiyacınız var?",
-    contactText: "Ürün, ölçü, miktar, ambalaj ve teslim noktası bilgileriyle talebinizi hazırlayın. Doğrulanmış şirket iletişim bilgileri yayından önce bağlanacaktır.",
+    contactText: "Ürün, ölçü, miktar, ambalaj ve teslim noktası bilgileriyle talebinizi hazırlayın.",
+    contactEmailLabel: "E-posta", contactAddressLabel: "Adres",
     formName: "Ad / şirket", formEmail: "E-posta", formProduct: "Ürün", formDestination: "Teslim noktası",
     formMessage: "Spesifikasyon / mesaj", formButton: "Talebi hazırlayın", optionCalcite: "Mikronize kalsit", optionDolomite: "Mikronize dolomit",
     optionLandscape: "Peyzaj taşları", optionObjects: "Doğal taş objeler",
     footerNote: "Ürün bulunabilirliği, spesifikasyon ve ambalaj her talep için teyit edilir.",
-    formStatus: "Talebiniz hazırlandı. Yayından önce doğrulanmış şirket e-posta adresi bağlanmalıdır."
+    formStatus: "Talebiniz e-posta uygulamanızda anchorminemineral@gmail.com adresine hazırlanacaktır."
   }
 };
 
@@ -115,6 +117,20 @@ document.querySelectorAll("[data-lang]").forEach((button) => {
 
 document.getElementById("enquiry-form").addEventListener("submit", (event) => {
   event.preventDefault();
+  const form = event.target;
+  const subject = `Product enquiry - ${form.product.value}`;
+  const body = [
+    `Name / company: ${form.name.value}`,
+    `Email: ${form.email.value}`,
+    `Product: ${form.product.value}`,
+    `Delivery destination: ${form.destination.value}`,
+    "",
+    "Specification / message:",
+    form.message.value
+  ].join("\n");
+  window.location.href =
+    "mailto:anchorminemineral@gmail.com?subject=" +
+    encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   document.getElementById("form-status").textContent = translations[currentLanguage].formStatus;
 });
 

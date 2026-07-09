@@ -199,3 +199,8 @@ footer > p { margin: 0; text-align: right; }
   .objects-grid { grid-template-columns: 1fr; }
   .objects-grid img { height: 300px; }
 }
+
+.contact-details { margin-top: 20px; display: grid; gap: 10px; }
+.contact-details p { margin: 0; display: flex; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.contact-details strong { min-width: 74px; }
+.contact-details a { color: inherit; text-decoration: underline; }

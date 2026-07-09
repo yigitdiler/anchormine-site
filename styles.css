@@ -214,3 +214,9 @@ footer > p { margin: 0; text-align: right; }
 .tech-card li:first-child { border-top: 0; padding-top: 0; }
 .tech-card li span { color: #6b7688; font-size: .78rem; text-transform: uppercase; letter-spacing: .02em; }
 .tech-card li b { color: #1f2b3d; font-weight: 600; }
+
+.catalog-section { padding: clamp(48px,7vw,96px) clamp(20px,6vw,88px); }
+.catalog-grid { display: grid; gap: 14px; margin-top: 28px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.catalog-grid figure { margin: 0; border-radius: 14px; overflow: hidden; position: relative; background: #eef1f5; }
+.catalog-grid img { display: block; width: 100%; height: 240px; object-fit: cover; }
+.catalog-grid figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 14px 12px; font-size: .82rem; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgba(10,18,35,.74)); }

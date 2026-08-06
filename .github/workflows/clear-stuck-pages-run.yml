@@ -18,31 +18,31 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const runId = 31102903433;
-            const pagesDeploymentId = "dd3167f6f757582b384c0611ed30ed7cb6c0f974";
+            const stalePagesDeployments = [
+              "34791fb6362e7a25832ac02a88acd517b66d244a",
+              "dd3167f6f757582b384c0611ed30ed7cb6c0f974",
+              "1e6a8cfb499f00e7f00d3460ee9c0ed4039f0726",
+              "9268349504d3d1003a16986ab09715f8f899a03f",
+              "69d4dfb5bc2b410cf4e5b9210f5a1c115ceea755",
+              "059b0743e1988e45ca7dfee2cfaa7a5da694cbef",
+            ];
 
-            try {
-              await github.request(
-                "POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel",
-                {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pages_deployment_id: pagesDeploymentId,
+            for (const pagesDeploymentId of stalePagesDeployments) {
+              try {
+                await github.request(
+                  "POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel",
+                  {
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pages_deployment_id: pagesDeploymentId,
+                  }
+                );
+                core.info(`Cancelled stale Pages deployment ${pagesDeploymentId}.`);
+              } catch (error) {
+                if (error.status === 404 || error.status === 409) {
+                  core.info(`Pages deployment ${pagesDeploymentId} is already gone or closed.`);
+                } else {
+                  throw error;
                 }
-              );
-              core.info(`Cancelled Pages deployment ${pagesDeploymentId}.`);
-            } catch (error) {
-              core.setFailed(`Pages deployment cancellation failed: ${error.message}`);
-              return;
-            }
-
-            try {
-              await github.rest.actions.cancelWorkflowRun({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                run_id: runId,
-              });
-              core.info(`Cancellation requested for workflow run ${runId}.`);
-            } catch (error) {
-              core.warning(`Workflow cancellation request returned: ${error.message}`);
+              }
             }

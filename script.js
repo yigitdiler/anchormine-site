@@ -59,7 +59,7 @@ const translations = {
     techDocsVal: "TDS, MSDS and laser particle-size analysis on request", techMeasure: "Analysis", techMeasureVal: "Laser diffraction (Bettersizer), sieve data and samples",
     footerNote: "Product availability, specifications and packing are confirmed per enquiry.",
     contactEmailLabelSecondary: "Email",
-    formStatus: "Your email app will open with the enquiry addressed to yigitdiler@anchormine.com and copied to emretanrikulu@anchormine.com."
+    formStatus: "Your email app will open with the enquiry addressed to both yigitdiler@anchormine.com and emretanrikulu@anchormine.com."
   },
   tr: {
     navProducts: "Ürünler", navSupply: "Tedarik", navAbout: "Hakkımızda", navContact: "İletişim",
@@ -121,7 +121,7 @@ const translations = {
     techDocsVal: "Talep üzerine TDS, MSDS ve lazer tane boyutu analizi", techMeasure: "Analiz", techMeasureVal: "Lazer difraksiyon (Bettersizer), elek verisi ve numune",
     footerNote: "Ürün bulunabilirliği, spesifikasyon ve ambalaj her talep için teyit edilir.",
     contactEmailLabelSecondary: "E-posta",
-    formStatus: "Talebiniz e-posta uygulamanızda yigitdiler@anchormine.com adresine, emretanrikulu@anchormine.com kopyasıyla hazırlanacaktır."
+    formStatus: "Talebiniz e-posta uygulamanızda yigitdiler@anchormine.com ve emretanrikulu@anchormine.com adreslerinin ikisine birden hazırlanacaktır."
   }
 };
 
@@ -161,8 +161,7 @@ document.getElementById("enquiry-form").addEventListener("submit", (event) => {
     form.message.value
   ].join("\n");
   window.location.href =
-    "mailto:yigitdiler@anchormine.com?cc=" +
-    encodeURIComponent("emretanrikulu@anchormine.com") + "&subject=" +
+    "mailto:yigitdiler@anchormine.com,emretanrikulu@anchormine.com?subject=" +
     encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   document.getElementById("form-status").textContent = translations[currentLanguage].formStatus;
 });

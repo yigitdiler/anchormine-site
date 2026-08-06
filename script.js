@@ -58,7 +58,8 @@ const translations = {
     techPacking: "Packing", techPackVal: "Bulk tanker · big bag · 25 kg bags", techDocs: "Documentation",
     techDocsVal: "TDS, MSDS and laser particle-size analysis on request", techMeasure: "Analysis", techMeasureVal: "Laser diffraction (Bettersizer), sieve data and samples",
     footerNote: "Product availability, specifications and packing are confirmed per enquiry.",
-    formStatus: "Your email app will open with the enquiry addressed to anchorminemineral@gmail.com."
+    contactEmailLabelSecondary: "Email",
+    formStatus: "Your email app will open with the enquiry addressed to yigitdiler@anchormine.com and copied to emretanrikulu@anchormine.com."
   },
   tr: {
     navProducts: "Ürünler", navSupply: "Tedarik", navAbout: "Hakkımızda", navContact: "İletişim",
@@ -119,7 +120,8 @@ const translations = {
     techPacking: "Ambalaj", techPackVal: "Silobaz · big bag · 25 kg torba", techDocs: "Belgeler",
     techDocsVal: "Talep üzerine TDS, MSDS ve lazer tane boyutu analizi", techMeasure: "Analiz", techMeasureVal: "Lazer difraksiyon (Bettersizer), elek verisi ve numune",
     footerNote: "Ürün bulunabilirliği, spesifikasyon ve ambalaj her talep için teyit edilir.",
-    formStatus: "Talebiniz e-posta uygulamanızda anchorminemineral@gmail.com adresine hazırlanacaktır."
+    contactEmailLabelSecondary: "E-posta",
+    formStatus: "Talebiniz e-posta uygulamanızda yigitdiler@anchormine.com adresine, emretanrikulu@anchormine.com kopyasıyla hazırlanacaktır."
   }
 };
 
@@ -159,7 +161,8 @@ document.getElementById("enquiry-form").addEventListener("submit", (event) => {
     form.message.value
   ].join("\n");
   window.location.href =
-    "mailto:anchorminemineral@gmail.com?subject=" +
+    "mailto:yigitdiler@anchormine.com?cc=" +
+    encodeURIComponent("emretanrikulu@anchormine.com") + "&subject=" +
     encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   document.getElementById("form-status").textContent = translations[currentLanguage].formStatus;
 });

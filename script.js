@@ -40,7 +40,7 @@ const translations = {
     contactText: "Prepare an enquiry with your product, size, volume, packing and destination requirements.",
     contactEmailLabel: "Email", contactPhoneLabel: "Phone", contactAddressLabel: "Address",
     formName: "Name / company", formEmail: "Email", formProduct: "Product", formDestination: "Delivery destination",
-    formMessage: "Specification / message", formButton: "Prepare enquiry", optionCalcite: "Micronized calcite", optionDolomite: "Micronized dolomite",
+    formMessage: "Specification / message", formButton: "Send enquiry", optionCalcite: "Micronized calcite", optionDolomite: "Micronized dolomite",
     optionLandscape: "Landscape stone", optionObjects: "Natural-stone objects",
     navTechnical: "Technical", navGallery: "Gallery",
     galEyebrow: "Catalog", galTitle: "A wider look at the material range.",
@@ -59,7 +59,9 @@ const translations = {
     techDocsVal: "TDS, MSDS and laser particle-size analysis on request", techMeasure: "Analysis", techMeasureVal: "Laser diffraction (Bettersizer), sieve data and samples",
     footerNote: "Product availability, specifications and packing are confirmed per enquiry.",
     contactEmailLabelSecondary: "Email",
-    formStatus: "Your email app will open with the enquiry addressed to both yigitdiler@anchormine.com and emretanrikulu@anchormine.com."
+    formSending: "Sending your enquiry...",
+    formSuccess: "Thank you. Your enquiry has been sent to the Anchor Mine team.",
+    formError: "We could not send your enquiry. Please try again or email our team directly."
   },
   tr: {
     navProducts: "Ürünler", navSupply: "Tedarik", navAbout: "Hakkımızda", navContact: "İletişim",
@@ -102,7 +104,7 @@ const translations = {
     contactText: "Ürün, ölçü, miktar, ambalaj ve teslim noktası bilgileriyle talebinizi hazırlayın.",
     contactEmailLabel: "E-posta", contactPhoneLabel: "Telefon", contactAddressLabel: "Adres",
     formName: "Ad / şirket", formEmail: "E-posta", formProduct: "Ürün", formDestination: "Teslim noktası",
-    formMessage: "Spesifikasyon / mesaj", formButton: "Talebi hazırlayın", optionCalcite: "Mikronize kalsit", optionDolomite: "Mikronize dolomit",
+    formMessage: "Spesifikasyon / mesaj", formButton: "Talebi gönderin", optionCalcite: "Mikronize kalsit", optionDolomite: "Mikronize dolomit",
     optionLandscape: "Peyzaj taşları", optionObjects: "Doğal taş objeler",
     navTechnical: "Teknik", navGallery: "Galeri",
     galEyebrow: "Katalog", galTitle: "Malzeme yelpazesine daha geniş bir bakış.",
@@ -121,7 +123,9 @@ const translations = {
     techDocsVal: "Talep üzerine TDS, MSDS ve lazer tane boyutu analizi", techMeasure: "Analiz", techMeasureVal: "Lazer difraksiyon (Bettersizer), elek verisi ve numune",
     footerNote: "Ürün bulunabilirliği, spesifikasyon ve ambalaj her talep için teyit edilir.",
     contactEmailLabelSecondary: "E-posta",
-    formStatus: "Talebiniz e-posta uygulamanızda yigitdiler@anchormine.com ve emretanrikulu@anchormine.com adreslerinin ikisine birden hazırlanacaktır."
+    formSending: "Talebiniz gönderiliyor...",
+    formSuccess: "Teşekkürler. Talebiniz Anchor Mine ekibine gönderildi.",
+    formError: "Talebiniz gönderilemedi. Lütfen tekrar deneyin veya ekibimize doğrudan e-posta gönderin."
   }
 };
 
@@ -147,23 +151,38 @@ document.querySelectorAll("[data-lang]").forEach((button) => {
   button.addEventListener("click", () => setLanguage(button.dataset.lang));
 });
 
-document.getElementById("enquiry-form").addEventListener("submit", (event) => {
+document.getElementById("enquiry-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   const form = event.target;
-  const subject = `Product enquiry - ${form.product.value}`;
-  const body = [
-    `Name / company: ${form.name.value}`,
-    `Email: ${form.email.value}`,
-    `Product: ${form.product.value}`,
-    `Delivery destination: ${form.destination.value}`,
-    "",
-    "Specification / message:",
-    form.message.value
-  ].join("\n");
-  window.location.href =
-    "mailto:yigitdiler@anchormine.com,emretanrikulu@anchormine.com?subject=" +
-    encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-  document.getElementById("form-status").textContent = translations[currentLanguage].formStatus;
+  const submitButton = form.querySelector('button[type="submit"]');
+  const status = document.getElementById("form-status");
+  const formData = new FormData(form);
+
+  formData.set("_subject", `Anchor Mine product enquiry - ${form.product.value}`);
+  submitButton.disabled = true;
+  status.classList.remove("is-success", "is-error");
+  status.textContent = translations[currentLanguage].formSending;
+
+  try {
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: { Accept: "application/json" }
+    });
+    const result = await response.json();
+    if (!response.ok || result.success === false || result.success === "false") {
+      throw new Error(result.message || "Form submission failed");
+    }
+    form.reset();
+    status.classList.add("is-success");
+    status.textContent = translations[currentLanguage].formSuccess;
+  } catch (error) {
+    console.error("Anchor Mine enquiry submission failed", error);
+    status.classList.add("is-error");
+    status.textContent = translations[currentLanguage].formError;
+  } finally {
+    submitButton.disabled = false;
+  }
 });
 
 const requestedLanguage = new URLSearchParams(window.location.search).get("lang");

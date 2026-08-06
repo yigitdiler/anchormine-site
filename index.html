@@ -284,7 +284,10 @@
           <p><strong data-i18n="contactAddressLabel">Address</strong><span>Heris Tower, Akdeniz Mah. Şehit Fethi Bey Cad. No:55/091, Konak / İzmir</span></p>
         </div>
       </div>
-      <form id="enquiry-form">
+      <form id="enquiry-form" action="https://formsubmit.co/ajax/yigitdiler@anchormine.com" method="POST">
+        <input name="_cc" type="hidden" value="emretanrikulu@anchormine.com">
+        <input name="_template" type="hidden" value="table">
+        <input aria-hidden="true" autocomplete="off" class="form-honeypot" name="_honey" tabindex="-1" type="text">
         <label><span data-i18n="formName">Name / company</span><input name="name" required type="text"></label>
         <label><span data-i18n="formEmail">Email</span><input name="email" required type="email"></label>
         <label><span data-i18n="formProduct">Product</span>
@@ -298,7 +301,7 @@
         <label><span data-i18n="formDestination">Delivery destination</span><input name="destination" type="text"></label>
         <label class="form-wide"><span data-i18n="formMessage">Specification / message</span><textarea name="message" required></textarea></label>
         <button class="button button-primary form-wide" data-i18n="formButton" type="submit">Prepare enquiry</button>
-        <p class="form-status form-wide" id="form-status" role="status"></p>
+        <p aria-live="polite" class="form-status form-wide" id="form-status" role="status"></p>
       </form>
     </section>
   </main>
